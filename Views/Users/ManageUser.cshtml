@@ -1,0 +1,93 @@
+@model UserManagementRazorViews.Models.ManageUserViewModel
+@{
+    ViewData["CreateOrEdit"] = Model.IsCreatePage ? "Create" : "Edit";
+    ViewData["Title"] = $"{ViewData["CreateOrEdit"]} User";
+}
+
+<div class="container">
+    <div class="row align-top mb-5">
+        <h4>@ViewData["CreateOrEdit"] User</h4>
+    </div>
+    <form enctype="multipart/form-data" method="post" asp-controller="Users" asp-action=@ViewData["CreateOrEdit"]>
+        <div class="form-group row">
+            <label for="emailInput" class="col-2 col-form-label">Email</label>
+            <div class="col-5">
+                <input id="emailInput" asp-for="UserEmail" type="email" class="form-control" placeholder="example@test.com"/>
+                <span asp-validation-for="UserEmail" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="nameInput" class="col-2 col-form-label">Name</label>
+            <div class="col-5">
+                <input id="nameInput" asp-for="UserName" asp-va type="text" class="form-control" placeholder="Example Name"/>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="nameInput" class="col-2 col-form-label">Surname</label> 
+            <div class="col-5">
+                <input id="surnameInput" asp-for="UserSurname" type="text" class="form-control" placeholder="Example Surname"/>
+                <span asp-validation-for="UserSurname" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="titlesInputs" class="col-2 col-form-label">Titles</label>
+            <div id="titlesInputs" class="col-5">
+                @{
+                    var titlesCount = Model.UserTitles?.Count();
+
+                    if (titlesCount != null)
+                    {
+                        for (int i = 0; i < Model.UserTitles.Count(); i++)
+                        {
+                            <input id="titlesInput-@i"
+                                   name="UserTitles[@i]"
+                                   value="@Model.UserTitles[i]"
+                                   type="text"
+                                   class="form-control mb-1"
+                                   placeholder="Example Title"/>
+                        }
+                    }
+                    else
+                    {
+                        <input id="titlesInput-0"
+                               name="UserTitles[0]"
+                               type="text"
+                               class="form-control mb-1"
+                               placeholder="Example Title"/>
+                    }
+                }
+            </div>
+            <div class="col-1">
+                <button id="addTitleButton" type="button" class="btn btn-secondary">Add</button>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="birthdate" class="col-2 col-form-label">Birth Date</label>
+            <div class="col-5">
+                <input id="birthdate" asp-for="UserBirthDate" class="form-control" type="date"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="company" class="col-2 col-form-label">Company</label>
+            <div class="col-5">
+                <select id="company" asp-for="SelectedCompanyId" asp-items="Model.AllCompanies" class="form-control">
+                    <option disabled="disabled" selected="selected">--- Select company ---</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="photo" class="col-2 col-form-label">Photo</label>
+            <div class="col-5">
+                <div class="custom-file">
+                    <input id="photo" type="file" class="custom-file-input" asp-for="Photo"/>
+                    <label class="custom-file-label" for="photo">Choose file</label>
+                    <span asp-validation-for="Photo" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary col-1 mt-4 form-control">@ViewData["CreateOrEdit"]</button>
+        <input id="userId" asp-for="UserId" name="UserId" type="hidden" value="@Model.UserId.ToString()"/>
+    </form>
+</div>
+<partial name="~/Views/Shared/_Logs.cshtml" model="@ViewData["Log"]"/>

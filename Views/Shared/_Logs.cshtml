@@ -1,0 +1,23 @@
+﻿@model IEnumerable<string>
+
+<div class="mt-5">
+    <p>
+        <a class="btn btn-primary" data-toggle="collapse" href="#logs" role="button" aria-expanded="false" aria-controls="logs">
+            Logs
+        </a>
+    </p>
+    <div class="collapse" id="logs">
+        <table class="table">
+            <tbody>
+            @{
+                foreach (var logRecord in Model)
+                {
+                    <tr class="col">
+                        <td>@logRecord</td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
